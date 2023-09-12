@@ -36,8 +36,8 @@ internal static class HostingExtensions
         isBuilder.AddSamlDynamicProvider(options =>
         {
             // unstorable/reusable data, such as license information and events. This will override the data stored
-            options.Licensee =  "{Input Licensee}";;
-            options.LicenseKey =  "{Input LicenseKey}";;
+            options.Licensee =  "{Input Licensee}";
+            options.LicenseKey =  "{Input LicenseKey}";
             options.SignedOutCallbackPath = "/federation/saml/slo";  //Takes a SAMLRESPONSE during SP initiated SLO
             options.LogSamlMessages = true; 
         })
