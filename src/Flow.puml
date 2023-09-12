@@ -1,0 +1,51 @@
+@startuml
+
+actor User
+participant Duende.SP 
+participant Duende.FederatedGateway
+participant Duende.IdP
+
+title SP-Initiated SAML SSO
+
+User -> Duende.SP : /sign-in
+Duende.SP -> Duende.FederatedGateway : /connect/authorise
+Duende.FederatedGateway -> Duende.FederatedGateway : /Account/Login
+Duende.FederatedGateway -> Duende.IdP : /saml/sso
+Duende.IdP -> Duende.IdP : /Account/Login?ReturnUrl
+Duende.IdP -> Duende.IdP : /Account/Login
+Duende.IdP -> Duende.IdP : /saml/sso/login?
+Duende.IdP -> Duende.FederatedGateway : /saml/sso
+Duende.FederatedGateway -> Duende.FederatedGateway : /Broker/SamlCallback
+Duende.FederatedGateway -> Duende.FederatedGateway : /connect/authorize/callback?clientId
+Duende.FederatedGateway -> Duende.SP : /signin-oidc
+Duende.SP -> Duende.SP : /sign-in
+Duende.SP -> Duende.SP : /
+
+
+newpage SP-Initiated SLO
+
+User -> Duende.SP : signout
+Duende.SP -> Duende.FederatedGateway : /connect/endsession?
+Duende.FederatedGateway -> Duende.IdP : /saml/slo
+Duende.IdP -> Duende.IdP : /Account/Logout/logoutId
+Duende.IdP -> Duende.IdP : /Account/Logout/Loggedout/logoutId
+Duende.IdP -> Duende.IdP : /connect/endsession/callback?endSessionId
+Duende.IdP -> Duende.IdP : /Account/Logout/SamlIterativeSlo?logoutId
+Duende.IdP -> Duende.IdP : /saml/slo/complete?requestId
+Duende.IdP -> Duende.FederatedGateway : /federation/saml/slo?SAMLResponse
+Duende.FederatedGateway -> Duende.SP : /
+
+newpage IdP-Initiated SLO
+
+ User -> Duende.IdP : /Account/Logout
+Duende.IdP -> Duende.IdP : /Account/Logout
+Duende.IdP -> Duende.IdP : /Account/Logout/LoggedOut?logoutId
+Duende.IdP -> Duende.IdP : /connect/endsession/callback?endSessionId
+Duende.IdP -> Duende.IdP : /Account/Logout/SamlIterativeSlo?logoutId
+Duende.IdP -> Duende.FederatedGateway : /federation/saml/slo?SAMLRequest
+
+Duende.FederatedGateway -> Duende.FederatedGateway : <color:red> System.InvalidOperationException: Headers are read-only, response has already started.
+
+
+
+@enduml

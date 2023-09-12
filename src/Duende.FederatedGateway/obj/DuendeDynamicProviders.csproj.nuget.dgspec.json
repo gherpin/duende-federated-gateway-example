@@ -1,0 +1,108 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\geher\\dev\\Samples.Saml2p\\FederatedGatewayExample\\Duende.FederatedGateway\\DuendeDynamicProviders.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\geher\\dev\\Samples.Saml2p\\FederatedGatewayExample\\Duende.FederatedGateway\\DuendeDynamicProviders.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\geher\\dev\\Samples.Saml2p\\FederatedGatewayExample\\Duende.FederatedGateway\\DuendeDynamicProviders.csproj",
+        "projectName": "DuendeDynamicProviders",
+        "projectPath": "C:\\Users\\geher\\dev\\Samples.Saml2p\\FederatedGatewayExample\\Duende.FederatedGateway\\DuendeDynamicProviders.csproj",
+        "packagesPath": "C:\\Users\\geher\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\geher\\dev\\Samples.Saml2p\\FederatedGatewayExample\\Duende.FederatedGateway\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\geher\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/im-client/index.json": {},
+          "https://nuget.pkg.github.com/im-customer-engagement/index.json": {},
+          "https://nuget.pkg.github.com/im-enrollment/index.json": {},
+          "https://nuget.pkg.github.com/im-funding/index.json": {},
+          "https://nuget.pkg.github.com/im-platform/index.json": {},
+          "https://nuget.pkg.github.com/im-practices/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Duende.IdentityServer": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Rsk.Saml": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Rsk.Saml.DuendeIdentityServer": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.21, 6.0.21]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.21, 6.0.21]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.21, 6.0.21]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.21, 6.0.21]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

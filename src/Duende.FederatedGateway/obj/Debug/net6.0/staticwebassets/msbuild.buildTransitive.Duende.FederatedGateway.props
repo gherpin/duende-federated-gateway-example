@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\Duende.FederatedGateway.props" />
+</Project>

@@ -1,0 +1,39 @@
+@model dynamic
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+<div>
+    <H1>Welcome</h1>
+    
+    @if (Context.User.Identity?.IsAuthenticated ?? false)
+    {
+        
+        <h2>Authenticated</h2>
+        <ul>
+            @foreach (var claim in Context.User.Claims)
+            {
+                <li><strong>@claim.Type:</strong> @claim.Value</li>
+            }
+        </ul>
+        <br/>
+        @Html.ActionLink("Local Logout", "Logout");
+        <br/>
+        @Html.ActionLink("SP Initiated SSO Logout", "FullLogout");
+    }
+    else
+    {
+        <p>Anonymous</p>
+        @Html.ActionLink("Saml Sign-in" , "SignIn")
+    }
+</div>
+</body>
+</html>

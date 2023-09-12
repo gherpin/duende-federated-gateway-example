@@ -1,0 +1,89 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Run Federated Gateway Example",
+            "configurations": [
+                "Launch Duende Federated Gateway (Federated Gateway)",
+                "Launch Duende IdP (Federated Gateway)",
+                "Launch Duende SP (Federated Gateway)"
+            ]
+        }
+    ],
+    "configurations": [
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        },
+        {
+            "name": "Launch Duende SP (Federated Gateway)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Duende.SP/bin/Debug/net6.0/Duende.SP.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/src/Duende.SP/Views"
+            },
+            "launchSettingsProfile": "Duende.SP",
+            "launchSettingsFilePath": "${workspaceFolder}/src/Duende.SP/Properties/launchSettings.json"
+        },
+        {
+            "name": "Launch Duende IdP (Federated Gateway)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Duende.IdP/bin/Debug/net6.0/Duende.Idp.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchSettingsProfile": "Duende.IdP",
+            "launchSettingsFilePath": "${workspaceFolder}/src/Duende.IdP/Properties/launchSettings.json"
+        },
+        {
+            "name": "Launch Duende Federated Gateway (Federated Gateway)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Duende.FederatedGateway/bin/Debug/net6.0/Duende.FederatedGateway.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchSettingsProfile": "Duende.FederatedGateway",
+            "launchSettingsFilePath": "${workspaceFolder}/src/Duende.FederatedGateway/Properties/launchSettings.json"
+        }
+    ]
+}
