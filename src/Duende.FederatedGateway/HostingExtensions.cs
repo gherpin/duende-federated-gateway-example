@@ -1,4 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
+using AuthDuendeentication.FederatedGateway.AuthorizationCode;
+using Duende.FederatedGateway.AuthorizationCode;
+using Duende.FederatedGateway.Validation;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using IdentityModel;
@@ -31,6 +34,10 @@ internal static class HostingExtensions
         isBuilder.AddInMemoryIdentityResources(Config.IdentityResources);
         isBuilder.AddInMemoryApiScopes(Config.ApiScopes);
         isBuilder.AddInMemoryClients(Config.Clients);
+
+
+        isBuilder.AddCustomTokenRequestValidator<TokenRequestValidator>();
+        isBuilder.AddProfileService<ProfileValidator>();
 
         // SP configuration - dynamic providers
         isBuilder.AddSamlDynamicProvider(options =>
@@ -68,6 +75,7 @@ internal static class HostingExtensions
                                 SigningCertificates = { new X509Certificate2("./src/Duende.FederatedGateway/idsrv3test.cer") },
                                 SingleSignOnEndpoint = new SamlEndpoint("https://localhost:5000/saml/sso", SamlBindingTypes.HttpRedirect),
                                 SingleLogoutEndpoint = new SamlEndpoint("https://localhost:5000/saml/slo", SamlBindingTypes.HttpRedirect)
+                                
                             },
 
                             // Details about yourself (the SP) - In This care the Federated Gateway
@@ -82,19 +90,22 @@ internal static class HostingExtensions
             })
         ;
 
+
+        builder.Services.AddScoped<IAuthorizationCodeTokenModifier, ParticipantAuthorizationCodeTokenModifier>();
+        builder.Services.AddScoped<IProfileModifier, ParticipantAccessTokenProfileModifier>();
+        builder.Services.AddScoped<IProfileModifier, ParticipantIdentityTokenProfileModifier>();
+
         
         builder.Services.AddAuthentication()
             //Register Federated Gateway as a SAML Service Provider
             .AddSaml2p("saml",options=>
             {
-                options.Licensee =  "{Input Licensee}";;
-                options.LicenseKey =  "{Input LicenseKey}";;
-                
+                options.Licensee =  "{Input Licensee}";
+                options.LicenseKey =  "{Input LicenseKey}";                
                 options.IdentityProviderMetadataAddress = "https://localhost:5000/saml/metadata";
 
                 options.CallbackPath = "/saml/sso";
-                
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                               options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 options.SignOutScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
 
                 

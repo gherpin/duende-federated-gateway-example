@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,7 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Clear();
         options.Scope.Add("openid");
         options.Scope.Add("email");
+        options.Scope.Add("address");
 
         options.ClaimsIssuer = "FedAuth";
         options.UseTokenLifetime = false;
@@ -43,6 +46,19 @@ builder.Services.AddAuthentication(options =>
         options.SaveTokens = true;
 
         options.SignedOutCallbackPath = new PathString("/signout-callback-oidc"); //This is post_logout_redirect_uri
+
+        options.Events = new OpenIdConnectEvents {
+
+             OnTokenValidated = async context => {
+
+                 Console.WriteLine("Token Validated");
+             },
+
+             OnTicketReceived = async context => {
+
+                Console.WriteLine("Ticket Received");
+             }
+        };
     });
 
 builder.Services.AddAuthorization();

@@ -9,7 +9,8 @@ public static class Config
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            new IdentityResources.Email()
+            new IdentityResources.Email(),
+            new IdentityResources.Address()
         };
 
     public static IEnumerable<ApiScope> ApiScopes =>
@@ -63,7 +64,7 @@ public static class Config
                 PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "email", "profile", "scope2" },
+                AllowedScopes = { "openid", "email", "profile", "scope2", "address" },
                 
             },
         };

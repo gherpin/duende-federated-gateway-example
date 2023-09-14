@@ -3,6 +3,7 @@ using Duende.IdentityServer;
 using Rsk.Saml;
 using Rsk.Saml.Models;
 using ServiceProvider = Rsk.Saml.Models.ServiceProvider;
+using IdentityModel;
 
 namespace Duende.IdP;
 
@@ -13,7 +14,9 @@ public static class Config
         return new IdentityResource[]
         {
             new IdentityResources.OpenId(),
-            new IdentityResources.Profile()
+            new IdentityResources.Profile(),
+            new IdentityResources.Email(),
+            new IdentityResources.Address()
         };
     }
 
@@ -43,12 +46,12 @@ public static class Config
                 ClientId = "https://localhost:5004/saml",
                 ClientName = "Duende Federated Gateway",
                 ProtocolType = IdentityServerConstants.ProtocolTypes.Saml2p,
-                AllowedScopes = {"openid", "profile"},
+                AllowedScopes = {"openid", "profile", "email", "address"},
                 PostLogoutRedirectUris = { 
                     "https://localhost:5002/signout-callback-oidc",
                     "https://localhost:5002/"
                 }
-                
+
             }
         };
     }
@@ -68,6 +71,12 @@ public static class Config
                 SingleLogoutServices =
                 {   
                     new Service(SamlConstants.BindingTypes.HttpRedirect , "https://localhost:5004/federation/saml/slo")
+                },
+                ClaimsMapping = new Dictionary<string, string> {
+                    {"name", JwtClaimTypes.Name},
+                    {"email", JwtClaimTypes.Email},
+                    {"website", JwtClaimTypes.WebSite }
+
                 }
             }
         };
