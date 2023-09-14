@@ -57,13 +57,14 @@ public static class Config
                 ClientSecrets = { new Secret("faa32bb9-ef61-4821-b503-f5d0dac35f3a".Sha256()) },
                     
                 AllowedGrantTypes = GrantTypes.Code,
-
+                AlwaysIncludeUserClaimsInIdToken = true, //Bypasses Clients frmo having to call /userinfo endpoint
                 RedirectUris = { "https://localhost:5002/signin-oidc" },
                 FrontChannelLogoutUri = "https://localhost:5002/signout-oidc",
                 PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "email", "profile", "scope2" }
+                AllowedScopes = { "openid", "email", "profile", "scope2" },
+                
             },
         };
 }
