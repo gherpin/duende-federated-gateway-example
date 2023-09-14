@@ -39,7 +39,8 @@ internal static class HostingExtensions
             options.Licensee =  "{Input Licensee}";
             options.LicenseKey =  "{Input LicenseKey}";
             options.SignedOutCallbackPath = "/federation/saml/slo";  //Takes a SAMLRESPONSE during SP initiated SLO
-            options.LogSamlMessages = true; 
+            options.LogSamlMessages = true;
+            options.TimeComparisonTolerance = 300;
         })
            
             // Use EntityFramework store for storing identity providers
@@ -59,7 +60,7 @@ internal static class HostingExtensions
                             CallbackPath = "/federation/saml/signin-saml", // Duende prefixes "/federation/{scheme}/{suffix}" to all paths
                             SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
                             SignOutScheme = "idsrv", // main cookie user is signed into
-                            TimeComparisonTolerance = 1000,
+                            TimeComparisonTolerance = 7200,
                             // The IdP you want to integrate with
                             IdentityProviderOptions = new IdpOptions
                             {

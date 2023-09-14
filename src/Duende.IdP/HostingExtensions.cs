@@ -42,7 +42,7 @@ internal static class HostingExtensions
 
                 options.WantAuthenticationRequestsSigned = false;
                 options.UseIFramesForSlo = false;
-                options.TimeComparisonTolerance = 10;
+                options.TimeComparisonTolerance = 7200;
                 options.LogSamlMessages = true;
             })
             .AddInMemoryServiceProviders(Config.GetServiceProviders());
