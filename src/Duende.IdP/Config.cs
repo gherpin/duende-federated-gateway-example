@@ -65,8 +65,8 @@ public static class Config
                 EntityId = "https://localhost:5004/saml",
                 AssertionConsumerServices =
                 {
-                    new Service(SamlConstants.BindingTypes.HttpPost , "https://localhost:5004/saml/sso"),
-                    new Service(SamlConstants.BindingTypes.HttpPost, "https://localhost:5004/signin-saml-3")
+                    new Service(SamlConstants.BindingTypes.HttpPost , "https://localhost:5004/federation/saml/sso"),
+                    //new Service(SamlConstants.BindingTypes.HttpPost, "https://localhost:5004/signin-saml-3")
                 },
                 SingleLogoutServices =
                 {   

@@ -42,41 +42,44 @@ internal static class HostingExtensions
            
             // Use EntityFramework store for storing identity providers
             //.AddIdentityProviderStore<SamlIdentityProviderStore>();
+        
+        
 
             // use in memory store for storing identity providers
-        .AddInMemoryIdentityProviders(new List<IdentityProvider>
-        {
-                new SamlDynamicIdentityProvider
-                {   
-                    Scheme = "saml",
-                    DisplayName = "saml",
-                    Enabled = true,
-                    SamlAuthenticationOptions = new Saml2pAuthenticationOptions
-                    {
-                        CallbackPath = "/federation/saml/signin-saml", // Duende prefixes "/federation/{scheme}/{suffix}" to all paths
-                        SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
-                        SignOutScheme = "idsrv", // main cookie user is signed into
-                        TimeComparisonTolerance = 7200,
+        // .AddInMemoryIdentityProviders(new List<IdentityProvider>
+        // {
+        //         new SamlDynamicIdentityProvider
+        //         {   
+        //             Scheme = "saml",
+        //             DisplayName = "saml",
+        //             Enabled = true,
+        //             SamlAuthenticationOptions = new Saml2pAuthenticationOptions
+        //             {
+        //                 CallbackPath = "/federation/saml/signin-saml", // Duende prefixes "/federation/{scheme}/{suffix}" to all paths
+        //                 SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
+        //                 SignOutScheme = "idsrv", // main cookie user is signed into
+        //                 TimeComparisonTolerance = 7200,
                         
-                        // The IdP you want to integrate with
-                        IdentityProviderOptions = new IdpOptions
-                        {
-                            EntityId = "https://localhost:5000",
-                            SigningCertificates = { new X509Certificate2("./src/Duende.FederatedGateway/idsrv3test.cer") },
-                            SingleSignOnEndpoint = new SamlEndpoint("https://localhost:5000/saml/sso", SamlBindingTypes.HttpRedirect),
-                            SingleLogoutEndpoint = new SamlEndpoint("https://localhost:5000/saml/slo", SamlBindingTypes.HttpRedirect)
-                        },
+        //                 // The IdP you want to integrate with
+        //                 IdentityProviderOptions = new IdpOptions
+        //                 {
+        //                     EntityId = "https://localhost:5000",
+        //                     SigningCertificates = { new X509Certificate2("./src/Duende.FederatedGateway/idsrv3test.cer") },
+        //                     SingleSignOnEndpoint = new SamlEndpoint("https://localhost:5000/saml/sso", SamlBindingTypes.HttpRedirect),
+        //                     SingleLogoutEndpoint = new SamlEndpoint("https://localhost:5000/saml/slo", SamlBindingTypes.HttpRedirect)
+        //                 },
 
-                        // Details about yourself (the SP) - In This care the Federated Gateway
-                        ServiceProviderOptions = new SpOptions
-                        {
-                            EntityId = "https://localhost:5004/saml",
-                            MetadataPath = "/federation/saml/metadata",
-                            SignAuthenticationRequests = false // OPTIONAL - use if you want to sign your auth requests,
-                        }
-                    }
-                }
-        });
+        //                 // Details about yourself (the SP) - In This care the Federated Gateway
+        //                 ServiceProviderOptions = new SpOptions
+        //                 {
+        //                     EntityId = "https://localhost:5004/saml",
+        //                     MetadataPath = "/federation/saml/metadata",
+        //                     SignAuthenticationRequests = false // OPTIONAL - use if you want to sign your auth requests,
+        //                 }
+        //             }
+        //         }
+        // })
+        ;
 
         builder.Services.AddScoped<IAuthorizationCodeTokenModifier, ParticipantAuthorizationCodeTokenModifier>();
         builder.Services.AddScoped<IProfileModifier, ParticipantAccessTokenProfileModifier>();
@@ -91,8 +94,8 @@ internal static class HostingExtensions
                 options.LicenseKey = "{Input LicenseKey}";
                 
                 options.IdentityProviderMetadataAddress = "https://localhost:5000/saml/metadata";
-
-                options.CallbackPath = "/saml/sso";
+                
+                options.CallbackPath = "/federation/saml/sso";
                 options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 options.SignOutScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
                 options.SignedOutCallbackPath = "/federation/saml/slo";
@@ -105,6 +108,7 @@ internal static class HostingExtensions
                     MetadataPath = "/saml/metadata",
                     SignAuthenticationRequests = false,
                 };
+
             });
 
         return builder.Build();
