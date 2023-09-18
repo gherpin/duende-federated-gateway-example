@@ -37,59 +37,46 @@ internal static class HostingExtensions
 
 
         isBuilder.AddCustomTokenRequestValidator<TokenRequestValidator>();
-        isBuilder.AddProfileService<ProfileValidator>();
+        isBuilder.AddProfileService<ProfileValidator>()
 
-        // SP configuration - dynamic providers
-        isBuilder.AddSamlDynamicProvider(options =>
-        {
-            // unstorable/reusable data, such as license information and events. This will override the data stored
-            options.Licensee =  "{Input Licensee}";
-            options.LicenseKey =  "{Input LicenseKey}";
-            options.SignedOutCallbackPath = "/federation/saml/slo";  //Takes a SAMLRESPONSE during SP initiated SLO
-            options.LogSamlMessages = true;
-            options.TimeComparisonTolerance = 300;
-        })
            
             // Use EntityFramework store for storing identity providers
             //.AddIdentityProviderStore<SamlIdentityProviderStore>();
 
             // use in memory store for storing identity providers
-            .AddInMemoryIdentityProviders(new List<IdentityProvider>
-            {
-                    new SamlDynamicIdentityProvider
-                    {   
+        .AddInMemoryIdentityProviders(new List<IdentityProvider>
+        {
+                new SamlDynamicIdentityProvider
+                {   
+                    Scheme = "saml",
+                    DisplayName = "saml",
+                    Enabled = true,
+                    SamlAuthenticationOptions = new Saml2pAuthenticationOptions
+                    {
+                        CallbackPath = "/federation/saml/signin-saml", // Duende prefixes "/federation/{scheme}/{suffix}" to all paths
+                        SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
+                        SignOutScheme = "idsrv", // main cookie user is signed into
+                        TimeComparisonTolerance = 7200,
                         
-                        Scheme = "saml",
-                        DisplayName = "saml",
-                        Enabled = true,
-                        SamlAuthenticationOptions = new Saml2pAuthenticationOptions
+                        // The IdP you want to integrate with
+                        IdentityProviderOptions = new IdpOptions
                         {
-                            CallbackPath = "/federation/saml/signin-saml", // Duende prefixes "/federation/{scheme}/{suffix}" to all paths
-                            SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme,
-                            SignOutScheme = "idsrv", // main cookie user is signed into
-                            TimeComparisonTolerance = 7200,
-                            // The IdP you want to integrate with
-                            IdentityProviderOptions = new IdpOptions
-                            {
-                                EntityId = "https://localhost:5000",
-                                SigningCertificates = { new X509Certificate2("./src/Duende.FederatedGateway/idsrv3test.cer") },
-                                SingleSignOnEndpoint = new SamlEndpoint("https://localhost:5000/saml/sso", SamlBindingTypes.HttpRedirect),
-                                SingleLogoutEndpoint = new SamlEndpoint("https://localhost:5000/saml/slo", SamlBindingTypes.HttpRedirect)
-                                
-                            },
+                            EntityId = "https://localhost:5000",
+                            SigningCertificates = { new X509Certificate2("./src/Duende.FederatedGateway/idsrv3test.cer") },
+                            SingleSignOnEndpoint = new SamlEndpoint("https://localhost:5000/saml/sso", SamlBindingTypes.HttpRedirect),
+                            SingleLogoutEndpoint = new SamlEndpoint("https://localhost:5000/saml/slo", SamlBindingTypes.HttpRedirect)
+                        },
 
-                            // Details about yourself (the SP) - In This care the Federated Gateway
-                            ServiceProviderOptions = new SpOptions
-                            {
-                                EntityId = "https://localhost:5004/saml",
-                                MetadataPath = "/federation/saml/metadata",
-                                SignAuthenticationRequests = false // OPTIONAL - use if you want to sign your auth requests
-                            }
+                        // Details about yourself (the SP) - In This care the Federated Gateway
+                        ServiceProviderOptions = new SpOptions
+                        {
+                            EntityId = "https://localhost:5004/saml",
+                            MetadataPath = "/federation/saml/metadata",
+                            SignAuthenticationRequests = false // OPTIONAL - use if you want to sign your auth requests,
                         }
                     }
-            })
-        ;
-
+                }
+        });
 
         builder.Services.AddScoped<IAuthorizationCodeTokenModifier, ParticipantAuthorizationCodeTokenModifier>();
         builder.Services.AddScoped<IProfileModifier, ParticipantAccessTokenProfileModifier>();
@@ -101,14 +88,16 @@ internal static class HostingExtensions
             .AddSaml2p("saml",options=>
             {
                 options.Licensee =  "{Input Licensee}";
-                options.LicenseKey =  "{Input LicenseKey}";                
+                options.LicenseKey = "{Input LicenseKey}";
+                
                 options.IdentityProviderMetadataAddress = "https://localhost:5000/saml/metadata";
 
                 options.CallbackPath = "/saml/sso";
-                               options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
                 options.SignOutScheme = IdentityServerConstants.DefaultCookieAuthenticationScheme;
+                options.SignedOutCallbackPath = "/federation/saml/slo";
 
-                
+                options.TimeComparisonTolerance = 300;
                 
                 options.ServiceProviderOptions = new SpOptions
                 {
@@ -116,8 +105,6 @@ internal static class HostingExtensions
                     MetadataPath = "/saml/metadata",
                     SignAuthenticationRequests = false,
                 };
-
-            
             });
 
         return builder.Build();

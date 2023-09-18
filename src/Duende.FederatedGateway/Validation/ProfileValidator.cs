@@ -4,6 +4,7 @@ using Duende.IdentityServer.Services;
 
 namespace Duende.FederatedGateway.Validation;
 
+//Executed after Duende makes a call to /token endpoint
 public class ProfileValidator : IProfileService
 {
     private readonly IEnumerable<IProfileModifier> _profileModifiers;

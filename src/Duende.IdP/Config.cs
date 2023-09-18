@@ -73,10 +73,7 @@ public static class Config
                     new Service(SamlConstants.BindingTypes.HttpRedirect , "https://localhost:5004/federation/saml/slo")
                 },
                 ClaimsMapping = new Dictionary<string, string> {
-                    {"name", JwtClaimTypes.Name},
-                    {"email", JwtClaimTypes.Email},
-                    {"website", JwtClaimTypes.WebSite }
-
+                    // {"name", JwtClaimTypes.Name},
                 }
             }
         };

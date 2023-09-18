@@ -37,8 +37,8 @@ internal static class HostingExtensions
         //Register Idp as a Saml Identity Provider
         isBuilder.AddSamlPlugin(options =>
             {
-                options.Licensee =  "{Input Licensee}";
-                options.LicenseKey =  "{Input LicenseKey}";
+                options.Licensee = "{Input Licensee}";
+                options.LicenseKey = "{Input LicenseKey}";
 
                 options.WantAuthenticationRequestsSigned = false;
                 options.UseIFramesForSlo = false;
